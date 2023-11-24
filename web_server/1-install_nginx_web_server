@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
-# Updating packages
-apt install nginx
-service nginx start
-rm /var/www/html/index.nginx-debian.html
-touch /var/www/html/index.html
-echo "<html><head></head><body><p>Holberton School</p></body></html>" > /var/www/html/index.html
-service nginx restart
+# Install Nginx using Homebrew
+brew install nginx
+
+# Create necessary directories
+sudo mkdir -p /usr/local/var/www/html
+
+# Create the HTML file
+sudo bash -c 'echo "Holberton School" > /usr/local/var/www/html/index.html'
+
+# Start Nginx service
+brew services start nginx
