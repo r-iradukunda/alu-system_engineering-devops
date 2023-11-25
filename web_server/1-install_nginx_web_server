@@ -1,18 +1,20 @@
 #!/usr/bin/env bash
-# installs nginx and configures it on a remote server
+# Install nginx web server, and return a page when querying Nginx
 
-# Update Homebrew
-brew update
+# Update package list
+sudo apt-get update
 
 # Install Nginx
-brew install nginx
+sudo apt-get install -y nginx
 
-# Allow Nginx through the firewall using pfctl
-sudo pfctl -e
-echo "pass in proto tcp from any to any port 80" | sudo pfctl -f -
+# Ensure Nginx is listening on port 80
+sudo sed -i 's/listen 80 default_server;/listen 80;/g' /etc/nginx/sites-available/default
 
-# Create a simple index page
-echo 'Hello World!' > /usr/local/var/www/index.html
+# Restart Nginx without using systemctl
+sudo kill -s HUP $(cat /var/run/nginx.pid)
 
-# Start Nginx
-brew services start nginx
+# Create a default HTML page with the required string
+echo "Holberton School" | sudo tee /var/www/html/index.html
+
+# Script execution complete
+sudo service nginx start
